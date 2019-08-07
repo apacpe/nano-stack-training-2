@@ -73,15 +73,8 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 ```
-3. In the same POST route we worked on, it should have the following codes and substitute the endpoint url with your HubSpot portal's ID and form GUID:
+3. In the same POST route we worked on, add the following codes and substitute the endpoint url with your HubSpot portal's ID and form GUID:
 ```
-app.post('/submit', (req, res) => {
-  collection.insertOne(req.body, (err, result) => {  
-    if (err) return console.log(err)
-
-    console.log('saved to database')
-  })
-  
   var postData = querystring.stringify({
 	    'firstname': req.body.firstname,
 	    'email': req.body.email,
@@ -125,8 +118,7 @@ app.post('/submit', (req, res) => {
 
 	request.write(postData);
 	request.end();
-  
-  res.redirect('/contact'); // or do something else here 
+ 
 })
 ```
 4. Test it out by submitting the form on your app again, and you should see the submission stored in MongoDB as well as appearing in the HubSpot form's submission page

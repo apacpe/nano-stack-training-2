@@ -86,4 +86,3 @@ app.post('/submit', (req, res) => {
   
   res.redirect('/'); // or do something else here 
 });
-
