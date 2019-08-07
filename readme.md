@@ -10,7 +10,7 @@ We will be using MongoDB as the database. You will need to create an account wit
 1. Create a new cluster and choose the free cluster specifications
 2. Give a name to the cluster and create it
 3. Once done, click into the cluster and click Connect 
-4. Add your IP address to the whitelist and create a database user
+4. Add an IP address that can be accessed from anywhere to the whitelist and create a database user
 
 ## Connect database to the app
 1. Install MongoDB on your application using `npm install mongodb --save`
@@ -50,7 +50,7 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
 ```
 2. Add this code in your app.js file as well to url encode form submission data:
 ```
-app.use(express.urlencoded());
+app.use(express.urlencoded({extended: true}));
 ```
 
 3. Test it out by submitting the form and you should see the data in a database called 'newdb' and within it a collection called 'newcollection' in your Atlas cluster's Collections tab
