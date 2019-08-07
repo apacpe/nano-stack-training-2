@@ -68,7 +68,6 @@ const querystring = require('querystring');
 const cookieParser = require('cookie-parser');
 
 app.use(cookieParser());
-
 ```
 3. In a POST route, add the following codes and substitute the endpoint url with your HubSpot portal's ID and form GUID:
 ```
