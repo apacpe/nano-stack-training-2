@@ -50,7 +50,7 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
 ```
 2. Add this code in your app.js file as well to url encode form submission data:
 ```
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded());
 ```
 
 3. Test it out by submitting the form and you should see the data in a database called 'newdb' and within it a collection called 'newcollection' in your Atlas cluster's Collections tab
@@ -68,7 +68,6 @@ const querystring = require('querystring');
 const cookieParser = require('cookie-parser');
 
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
 
 ```
 3. In a POST route, add the following codes and substitute the endpoint url with your HubSpot portal's ID and form GUID:
