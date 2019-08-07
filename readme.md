@@ -39,16 +39,14 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
 ```
 
 ## Store form submission data into MongoDB
-1. For the POST route of your app.js file which is used to handle your form submission, add the following codes:
+1. In the POST route of your app.js file which is used to handle your form submission, add the following codes:
 ```
-app.post('/submit', (req, res) => {
   collection.insertOne(req.body, (err, result) => {  
     if (err) return console.log(err)
 
     console.log('saved to database')
     res.redirect('/') // or do something else here
   })
-})
 ```
 2. Add this code in your app.js file as well to url encode form submission data:
 ```
@@ -73,7 +71,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 ```
-3. In the same POST route we worked on, add the following codes and substitute the endpoint url with your HubSpot portal's ID and form GUID:
+3. In a POST route, add the following codes and substitute the endpoint url with your HubSpot portal's ID and form GUID:
 ```
   var postData = querystring.stringify({
 	    'firstname': req.body.firstname,
