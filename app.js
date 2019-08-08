@@ -56,7 +56,7 @@ app.post('/submit', (req, res) => {
 
 	var options = {
 		hostname: 'forms.hubspot.com',
-		path: '/uploads/form/v2/3787161/b2d343f9-9423-4aa6-995a-722d87905fbc',
+		path: '/uploads/form/v2/:portalid/:guid',
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/x-www-form-urlencoded',
