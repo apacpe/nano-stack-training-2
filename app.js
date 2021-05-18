@@ -1,6 +1,5 @@
 const express = require('express');
 const https = require('https');
-const querystring = require('querystring');
 const cookieParser = require('cookie-parser');
 const MongoClient = require('mongodb').MongoClient;
 const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;

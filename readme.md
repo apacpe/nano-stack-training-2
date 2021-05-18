@@ -58,14 +58,12 @@ app.use(express.urlencoded({extended: true}));
 ## Submit form to HubSpot via API
 1. Install the following node modules:
 ```
-npm install querystring
 npm install cookie-parser
 npm install xmlhttprequest
 ```
 2. Add the following node modules and middleware in your app.js file:
 ```
 const https = require('https');
-const querystring = require('querystring');
 const cookieParser = require('cookie-parser');
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
