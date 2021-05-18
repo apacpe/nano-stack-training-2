@@ -3,6 +3,7 @@ const https = require('https');
 const querystring = require('querystring');
 const cookieParser = require('cookie-parser');
 const MongoClient = require('mongodb').MongoClient;
+const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -40,49 +41,55 @@ app.post('/submit', (req, res) => {
     console.log('saved to database')
   })
 
-	var postData = querystring.stringify({
-		    'firstname': req.body.firstname,
-		    'email': req.body.email,
-		    'message': req.body.enquiry,
-		    'hs_context': JSON.stringify({
-		        "hutk": req.cookies.hubspotutk,
-		        "ipAddress": req.headers['x-forwarded-for'] || req.connection.remoteAddress,
-		        "pageUrl": "http://www.portfolio.com/contact",
-		        "pageName": "Portfolio contact me"
-		    })
-		});
+  function formv3(){
+    // Create the new request 
+    var xhr = new XMLHttpRequest();
+    var url = 'https://api.hsforms.com/submissions/v3/integration/submit/3787161/7fbf1063-4fc0-4e1a-9d9f-74453fe7cce7'
+    
+    // Example request JSON:
+    var data = {
+      "fields": [
+        {
+          "name": "email",
+          "value": req.body.email
+        },
+        {
+          "name": "firstname",
+          "value": req.body.firstname
+        }
+      ],
+      "context": {
+        "hutk": req.cookies.hubspotutk,
+        "pageUri": "http://www.portfolio.com/contact",
+        "pageName": "Portfolio contact me"
+      }
+    }
 
-// set the post options, changing out the HUB ID and FORM GUID variables.
+    var final_data = JSON.stringify(data)
 
-	var options = {
-		hostname: 'forms.hubspot.com',
-		path: '/uploads/form/v2/:portalid/:guid',
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'Content-Length': postData.length
-		}
-	}
+    xhr.open('POST', url);
+    // Sets the value of the 'Content-Type' HTTP request headers to 'application/json'
+    xhr.setRequestHeader('Content-Type', 'application/json');
 
-// set up the request
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) { 
+            console.log(xhr.responseText); // Returns a 200 response if the submission is successful.
+        } else if (xhr.readyState == 4 && xhr.status == 400){ 
+            console.log(xhr.responseText); // Returns a 400 error the submission is rejected.          
+        } else if (xhr.readyState == 4 && xhr.status == 403){ 
+            console.log(xhr.responseText); // Returns a 403 error if the portal isn't allowed to post submissions.           
+        } else if (xhr.readyState == 4 && xhr.status == 404){ 
+            console.log(xhr.responseText); //Returns a 404 error if the formGuid isn't found     
+        }
+       }
 
-	var request = https.request(options, function(response){
-		console.log("Status: " + response.statusCode);
-		console.log("Headers: " + JSON.stringify(response.headers));
-		response.setEncoding('utf8');
-		response.on('data', function(chunk){
-			console.log('Body: ' + chunk)
-		});
-	});
 
-	request.on('error', function(e){
-		console.log("Problem with request " + e.message)
-	});
+    // Sends the request 
+    
+    xhr.send(final_data)
+ }
 
-// post the data
+ formv3();
 
-	request.write(postData);
-	request.end();
-  
-  res.redirect('/'); // or do something else here 
+ res.redirect('/'); // or do something else here 
 });

@@ -60,61 +60,67 @@ app.use(express.urlencoded({extended: true}));
 ```
 npm install querystring
 npm install cookie-parser
+npm install xmlhttprequest
 ```
 2. Add the following node modules and middleware in your app.js file:
 ```
 const https = require('https');
 const querystring = require('querystring');
 const cookieParser = require('cookie-parser');
+var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 app.use(cookieParser());
 ```
 3. In a POST route, add the following codes and substitute the endpoint url with your HubSpot portal's ID and form GUID:
 ```
-  var postData = querystring.stringify({
-	    'firstname': req.body.firstname,
-	    'email': req.body.email,
-	    'message': req.body.enquiry,
-	    'hs_context': JSON.stringify({
-	        "hutk": req.cookies.hubspotutk,
-	        "ipAddress": req.headers['x-forwarded-for'] || req.connection.remoteAddress,
-	        "pageUrl": "http://www.portfolio.com/contact",
-	        "pageName": "Portfolio contact me"
-	    })
-	});
+function formv3(){
+    // Create the new request 
+    var xhr = new XMLHttpRequest();
+    var url = 'https://api.hsforms.com/submissions/v3/integration/submit/:portalId/:formGuid'
+    
+    // Example request JSON:
+    var data = {
+      "fields": [
+        {
+          "name": "email",
+          "value": req.body.email
+        },
+        {
+          "name": "firstname",
+          "value": req.body.firstname
+        }
+      ],
+      "context": {
+        "hutk": req.cookies.hubspotutk,
+        "pageUri": "http://www.portfolio.com/contact",
+        "pageName": "Portfolio contact me"
+      }
+    }
 
-// set the post options, changing out the HUB ID and FORM GUID variables.
+    var final_data = JSON.stringify(data)
 
-	var options = {
-		hostname: 'forms.hubspot.com',
-		path: '/uploads/form/v2/:portalId/:formGuid',
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded',
-			'Content-Length': postData.length
-		}
-	}
+    xhr.open('POST', url);
+    // Sets the value of the 'Content-Type' HTTP request headers to 'application/json'
+    xhr.setRequestHeader('Content-Type', 'application/json');
 
-// set up the request
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) { 
+            console.log(xhr.responseText); // Returns a 200 response if the submission is successful.
+        } else if (xhr.readyState == 4 && xhr.status == 400){ 
+            console.log(xhr.responseText); // Returns a 400 error the submission is rejected.          
+        } else if (xhr.readyState == 4 && xhr.status == 403){ 
+            console.log(xhr.responseText); // Returns a 403 error if the portal isn't allowed to post submissions.           
+        } else if (xhr.readyState == 4 && xhr.status == 404){ 
+            console.log(xhr.responseText); //Returns a 404 error if the formGuid isn't found     
+        }
+       }
 
-	var request = https.request(options, function(response){
-		console.log("Status: " + response.statusCode);
-		console.log("Headers: " + JSON.stringify(response.headers));
-		response.setEncoding('utf8');
-		response.on('data', function(chunk){
-			console.log('Body: ' + chunk)
-		});
-	});
 
-	request.on('error', function(e){
-		console.log("Problem with request " + e.message)
-	});
+    // Sends the request 
+    
+    xhr.send(final_data)
+ }
 
-// post the data
-
-	request.write(postData);
-	request.end();
- 
-})
+ formv3();
 ```
-4. Test it out by submitting the form on your app again, and you should see the submission stored in MongoDB as well as appearing in the HubSpot form's submission page
+4. You can install the HubSpot tracking code on your app's page to pass cookies properly, and test it out by submitting the form on your app. You should see the submission stored in both MongoDB and in the HubSpot form's submission page
