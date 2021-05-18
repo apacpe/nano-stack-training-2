@@ -3,7 +3,7 @@ This is a continuation from [this guide](https://github.com/JasLinnie/nano-stack
 
 In this guide, we will be achieving these 2 items:
 1. Connect a database to the application to store form submissions  
-2. Incorporate [HubSpot forms API v2](https://developers.hubspot.com/docs/methods/forms/submit_form)
+2. Incorporate [HubSpot forms API v3](https://developers.hubspot.com/docs/methods/forms/submit_form)
 
 ## Pre-requisites
 We will be using MongoDB as the database. You will need to create an account with a service such as [mongoDB Atlas](https://www.mongodb.com/cloud/atlas?jmp=homepage), which is a cloud service that hosts MongoDB databases. Once the account is created, do the following:
