@@ -1,5 +1,5 @@
 # Node.js Web Application - Part 2
-This is a continuation from [this guide](https://github.com/JasLinnie/nano-stack-training-1). Before you start on this, your application should have at least one page with a HTML form and a POST route that handles the submission of the form.  
+This is a continuation from [this guide](https://github.com/apacpe/nano-stack-training-1). Before you start on this, your application should have at least one page with a HTML form and a POST route that handles the submission of the form.  
 
 In this guide, we will be achieving these 2 items:
 1. Connect a database to the application to store form submissions  
