@@ -33,7 +33,7 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
 
   // Start the application after the database connection is ready
   app.listen(port, () => {
-    console.log('This app is running on port ' + port)
+    console.log('This app is running on port 3000')
   });
 });
 ```
