@@ -32,7 +32,7 @@ MongoClient.connect(CONNECTION_URL, { useNewUrlParser: true }, (error, client) =
   collection = database.collection("newcollection"); // you can change the collection name
 
   // Start the application after the database connection is ready
-  app.listen(port, () => {
+  app.listen(3000, () => {
     console.log('This app is running on port 3000')
   });
 });
